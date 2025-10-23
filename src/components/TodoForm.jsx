@@ -2,50 +2,55 @@
 import React, { useState } from "react";
 
 function TodoForm({ onTodoAdded }) {
-  // 부모 컴포넌트로부터 '할 일이 추가되면 호출될 함수'를 받습니다.
-  const [content, setContent] = useState(""); // 입력 필드의 내용을 저장할 상태 변수
+  const [content, setContent] = useState("");
 
-  // 입력 필드에 값이 변경될 때마다 content 상태를 업데이트합니다.
   const handleInputChange = (e) => {
     setContent(e.target.value);
   };
 
-  // 폼 제출 시 호출될 함수
   const handleSubmit = async (e) => {
-    e.preventDefault(); // 폼의 기본 제출 동작(페이지 새로고침)을 막습니다.
+    e.preventDefault();
 
-    // 입력 내용이 비어있다면 추가하지 않습니다.
     if (!content.trim()) {
       alert("할 일을 입력해주세요!");
       return;
     }
 
     try {
-      // 백엔드 API에 POST 요청을 보냅니다.
+      // 🚨 이 부분이 핵심 수정 사항입니다!
+      // 환경 변수에서 백엔드 API URL을 가져옵니다.
+      // Vercel에 설정한 REACT_APP_BACKEND_API_URL과 .env 파일에 설정한 변수명이 일치해야 합니다.
+      const backendApiUrl = process.env.REACT_APP_BACKEND_API_URL;
+
+      if (!backendApiUrl) {
+        // 환경 변수가 설정되지 않았을 경우를 대비한 체크
+        console.error(
+          "환경 변수 REACT_APP_BACKEND_API_URL이 설정되지 않았습니다."
+        );
+        alert("API 서버 주소를 찾을 수 없습니다. 관리자에게 문의해주세요.");
+        return;
+      }
+
       const response = await fetch(
-        "https://backend-javaspring-yi7s.onrender.com/api/todos",
+        backendApiUrl, // <--- 백엔드 API URL을 환경 변수로 대체!
         {
-          method: "POST", // POST 메서드 사용
+          method: "POST",
           headers: {
-            "Content-Type": "application/json", // JSON 형식으로 데이터를 보낸다고 명시
+            "Content-Type": "application/json",
           },
-          // JavaScript 객체를 JSON 문자열로 변환하여 요청 본문에 넣습니다.
           body: JSON.stringify({ content: content, completed: false }),
         }
       );
 
       if (!response.ok) {
-        // HTTP 응답 코드가 200 OK가 아니면 에러 처리
         throw new Error(`할 일 추가 실패! status: ${response.status}`);
       }
 
-      // 할 일 추가 성공!
-      const newTodo = await response.json(); // 백엔드에서 응답으로 보내준 새로운 할 일 데이터를 받습니다.
+      const newTodo = await response.json();
       console.log("새로운 할 일 추가 성공:", newTodo);
 
-      setContent(""); // 입력 필드를 비웁니다.
+      setContent("");
 
-      // 부모 컴포넌트에 할 일이 추가되었음을 알립니다. (TodoList를 새로고침하기 위함)
       if (onTodoAdded) {
         onTodoAdded(newTodo);
       }
