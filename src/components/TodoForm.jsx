@@ -20,7 +20,7 @@ function TodoForm({ onTodoAdded }) {
       // 🚨 이 부분이 핵심 수정 사항입니다!
       // 환경 변수에서 백엔드 API URL을 가져옵니다.
       // Vercel에 설정한 REACT_APP_BACKEND_API_URL과 .env 파일에 설정한 변수명이 일치해야 합니다.
-      const backendApiUrl = process.env.REACT_APP_BACKEND_API_URL;
+      const backendApiUrl = import.meta.env.VITE_REACT_APP_BACKEND_API_URL;
 
       if (!backendApiUrl) {
         // 환경 변수가 설정되지 않았을 경우를 대비한 체크

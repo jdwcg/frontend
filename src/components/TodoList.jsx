@@ -10,7 +10,7 @@ function TodoList({ refreshKey, onListChanged }) {
   // 환경 변수에서 백엔드 API URL을 가져옵니다.
   // 이 상수는 함수 컴포넌트 내부 또는 외부에 선언할 수 있습니다.
   // 여기서는 여러 함수에서 사용되므로, 렌더링마다 생성되지 않도록 컴포넌트 외부에 선언하는 것도 좋습니다.
-  const backendApiUrl = process.env.REACT_APP_BACKEND_API_URL;
+  const backendApiUrl = import.meta.env.VITE_REACT_APP_BACKEND_API_URL;
 
   // 환경 변수가 설정되지 않았을 경우를 대비한 체크
   // 이 부분은 컴포넌트가 마운트될 때 한 번만 수행되도록 useEffect 밖에서 상수로 선언하는 것이 더 적절합니다.
