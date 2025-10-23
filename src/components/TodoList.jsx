@@ -11,7 +11,7 @@ function TodoList({ refreshKey, onListChanged }) {
   useEffect(() => {
     setLoading(true); // 데이터를 다시 불러올 때 로딩 상태로 설정
     // 백엔드 API로부터 할 일 목록을 가져오는 fetch 요청
-    fetch("http://localhost:8080/api/todos")
+    fetch("https://backend-javaspring-yi7s.onrender.com/api/todos")
       .then((response) => {
         if (!response.ok) {
           // HTTP 응답 코드가 200 OK가 아니면 에러 처리
@@ -38,14 +38,17 @@ function TodoList({ refreshKey, onListChanged }) {
   const handleToggleCompleted = async (id, currentCompletedStatus) => {
     try {
       // 백엔드 API에 PUT 요청을 보냅니다.
-      const response = await fetch(`http://localhost:8080/api/todos/${id}`, {
-        method: "PUT", // PUT 메서드 사용
-        headers: {
-          "Content-Type": "application/json",
-        },
-        // 현재 상태의 반대 (true -> false, false -> true)로 completed 상태를 업데이트
-        body: JSON.stringify({ completed: !currentCompletedStatus }),
-      });
+      const response = await fetch(
+        `https://backend-javaspring-yi7s.onrender.com/api/todos/${id}`,
+        {
+          method: "PUT", // PUT 메서드 사용
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // 현재 상태의 반대 (true -> false, false -> true)로 completed 상태를 업데이트
+          body: JSON.stringify({ completed: !currentCompletedStatus }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`할 일 상태 업데이트 실패! status: ${response.status}`);
@@ -68,9 +71,12 @@ function TodoList({ refreshKey, onListChanged }) {
     }
     try {
       // 백엔드 API에 DELETE 요청을 보냅니다.
-      const response = await fetch(`http://localhost:8080/api/todos/${id}`, {
-        method: "DELETE", // DELETE 메서드 사용
-      });
+      const response = await fetch(
+        `https://backend-javaspring-yi7s.onrender.com/api/todos/${id}`,
+        {
+          method: "DELETE", // DELETE 메서드 사용
+        }
+      );
 
       // DELETE 요청은 보통 204 No Content 또는 200 OK를 반환합니다.
       // 내용이 없더라도 응답이 성공적인지 확인합니다.

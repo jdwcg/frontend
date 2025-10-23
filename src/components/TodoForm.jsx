@@ -22,14 +22,17 @@ function TodoForm({ onTodoAdded }) {
 
     try {
       // 백엔드 API에 POST 요청을 보냅니다.
-      const response = await fetch("http://localhost:8080/api/todos", {
-        method: "POST", // POST 메서드 사용
-        headers: {
-          "Content-Type": "application/json", // JSON 형식으로 데이터를 보낸다고 명시
-        },
-        // JavaScript 객체를 JSON 문자열로 변환하여 요청 본문에 넣습니다.
-        body: JSON.stringify({ content: content, completed: false }),
-      });
+      const response = await fetch(
+        "https://backend-javaspring-yi7s.onrender.com/api/todos",
+        {
+          method: "POST", // POST 메서드 사용
+          headers: {
+            "Content-Type": "application/json", // JSON 형식으로 데이터를 보낸다고 명시
+          },
+          // JavaScript 객체를 JSON 문자열로 변환하여 요청 본문에 넣습니다.
+          body: JSON.stringify({ content: content, completed: false }),
+        }
+      );
 
       if (!response.ok) {
         // HTTP 응답 코드가 200 OK가 아니면 에러 처리
