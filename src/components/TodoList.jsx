@@ -150,7 +150,7 @@ function TodoList({ refreshKey, onListChanged }) {
                 onChange={() => handleToggleCompleted(todo.id, todo.completed)}
                 style={{ marginRight: "10px" }}
               />
-              <span>{todo.content}</span>
+              <span style={{ color: "black" }}>{todo.content}</span>
               {/* 삭제 버튼 추가 */}
               <button
                 onClick={() => handleDeleteTodo(todo.id)}
